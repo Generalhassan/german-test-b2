@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Deutschtest B2 — Lektion 5–8</title>
+<style>
+  :root {
+    --blue: #1f4e8c;
+    --blue-soft: #e6edf6;
+    --green: #2e7d32;
+    --green-soft: #e8f5e9;
+    --red: #c62828;
+    --red-soft: #fdecea;
+    --gray: #6b6f76;
+    --bg: #fafafa;
+    --card: #ffffff;
+    --border: #e1e4e8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: #222;
+    line-height: 1.5;
+  }
+  header {
+    background: var(--blue);
+    color: white;
+    padding: 1.5rem 1.25rem;
+  }
+  header h1 { margin: 0; font-size: 1.6rem; letter-spacing: 0.5px; }
+  header p { margin: 0.25rem 0 0; opacity: 0.85; font-size: 0.95rem; }
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 1.25rem;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .intro h2 { margin-top: 0; color: var(--blue); }
+  .intro ul { padding-left: 1.25rem; }
+  .intro li { margin-bottom: 0.4rem; }
+  .test-choice {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.3rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  button:hover { background: #163a6b; }
+  button.secondary {
+    background: white;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+  }
+  button.secondary:hover { background: var(--blue-soft); }
+  .section-header {
+    background: var(--blue-soft);
+    color: var(--blue);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    margin: 1.5rem 0 0.75rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  .question {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 0.85rem;
+  }
+  .question .qnum {
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+  .question .prompt {
+    margin: 0.4rem 0 0.7rem;
+    white-space: pre-wrap;
+  }
+  .question input[type=text],
+  .question textarea {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    font-size: 1rem;
+    border: 1px solid #c8ccd1;
+    border-radius: 5px;
+    font-family: inherit;
+  }
+  .question textarea { min-height: 60px; resize: vertical; }
+  .question input[type=text]:focus,
+  .question textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px var(--blue-soft);
+  }
+  .options { display: flex; flex-direction: column; gap: 0.35rem; }
+  .options label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.4rem 0.55rem;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .options label:hover { background: var(--blue-soft); }
+  .options input[type=radio] { margin-top: 0.2rem; flex-shrink: 0; }
+  .actions {
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .test-label {
+    display: inline-block;
+    background: var(--blue-soft);
+    color: var(--blue);
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  .results-summary {
+    text-align: center;
+    background: var(--blue);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+  .results-summary .score {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.3rem 0;
+  }
+  .results-summary .pct { font-size: 1.1rem; opacity: 0.9; }
+  .question.correct { border-left: 4px solid var(--green); background: var(--green-soft); }
+  .question.incorrect { border-left: 4px solid var(--red); background: var(--red-soft); }
+  .question.unanswered { border-left: 4px solid var(--gray); background: #f3f4f5; }
+  .feedback {
+    margin-top: 0.7rem;
+    padding: 0.7rem 0.85rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 0.93rem;
+  }
+  .feedback .label { font-weight: 600; }
+  .feedback .your-answer { color: var(--red); }
+  .feedback .your-answer.ok { color: var(--green); }
+  .feedback .correct-answer { color: var(--green); }
+  .feedback .explanation {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border);
+    color: #444;
+  }
+  @media (max-width: 560px) {
+    header h1 { font-size: 1.3rem; }
+    main { padding: 0.75rem; }
+    .card, .question { padding: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Deutschtest B2 — Lektionen 5–8</h1>
+  <p>Grammatik &amp; Wortschatz · Test A &amp; Test B (je 50 Aufgaben)</p>
+</header>
+<main>
+  <section id="intro" class="card intro">
+    <h2>Willkommen!</h2>
+    <p>Es gibt zwei Tests mit jeweils 50 Aufgaben. Beide decken dieselben Themen ab, enthalten aber unterschiedliche Aufgaben — ideal als Übung und Wiederholung.</p>
+    <p><strong>Themen:</strong></p>
+    <ul>
+      <li><strong>Grammatik:</strong> das Verb <em>lassen</em>, Futur II (Vermutungen), Verbverbindungen mit Doppelinfinitiv, Konjunktiv II (Bedingung, Wunsch, Vergleich), Adjektive mit festen Präpositionen, Nomen mit Präposition, indirekte Rede, generalisierende Relativsätze, <em>je…desto</em>, subjektives <em>sollen</em>, Nominalisierung, konditionale &amp; konzessive Zusammenhänge.</li>
+      <li><strong>Wortschatz:</strong> Lektion 5, 6, 7 &amp; 8.</li>
+    </ul>
+    <p>Aufgabentypen: <strong>Lückentext</strong>, <strong>Multiple Choice</strong> und <strong>Satztransformation</strong>. Bei Texteingaben werden Groß-/Kleinschreibung und Satzzeichen großzügig gewertet; meistens werden mehrere richtige Varianten akzeptiert.</p>
+    <div class="test-choice">
+      <button data-test="A">Test A starten</button>
+      <button data-test="B">Test B starten</button>
+    </div>
+  </section>
+
+  <form id="quizForm" hidden onsubmit="return false;"></form>
+
+  <div id="actions" class="actions" hidden>
+    <button id="submitBtn">Test abschicken &amp; auswerten</button>
+  </div>
+
+  <section id="results" hidden></section>
+</main>
+
+<script>
+// ===============================================================
+// TEST A — 50 questions
+// ===============================================================
+const questionsA = [
+  // ---- lassen (3) ----
+  { section: 'Das Verb „lassen"', type: 'fill',
+    prompt: 'Ergänzen Sie das Verb „lassen" in der richtigen Form:\n„Sie ___ ihre Frisur so, wie sie ist."',
+    answer: ['lässt'],
+    explanation: '3. Person Sg. Präsens von „lassen" → „lässt" (mit Umlaut). Bedeutung 4: etwas nicht verändern.' },
+
+  { section: 'Das Verb „lassen"', type: 'mc',
+    prompt: 'Welche Bedeutung hat „lassen" in folgendem Satz?\n„Manche Modezeitschriften lassen nicht-professionelle Models ihre Mode vorführen."',
+    options: [
+      'etwas erlauben / zulassen',
+      'andere mit etwas beauftragen',
+      'etwas ist möglich (passivisch)',
+      'etwas nicht verändern'
+    ],
+    answer: 1,
+    explanation: 'Bedeutung 2: Die Zeitschriften machen es nicht selbst, sondern beauftragen die Models.' },
+
+  { section: 'Das Verb „lassen"', type: 'fill',
+    prompt: 'Ergänzen Sie das Perfekt – Achtung, Doppelinfinitiv!\n„Laura hat gern Fotos von sich machen ___."',
+    answer: ['lassen'],
+    explanation: '„lassen" + Infinitiv bildet das Perfekt mit Doppelinfinitiv: „machen lassen" (nicht „gemacht" oder „gelassen"). Hilfsverb: haben.' },
+
+  // ---- Futur II (3) ----
+  { section: 'Futur II – Vermutungen', type: 'transform',
+    prompt: 'Formen Sie die Vermutung in Futur II um:\n„Da hat sich Ihr Leben wohl ziemlich verändert."',
+    answer: ['Da wird sich Ihr Leben ziemlich verändert haben'],
+    explanation: 'Futur II für Vermutungen über die Vergangenheit: werden + Partizip II + haben/sein. „verändern" → Perfekt mit „haben". Das Adverb „wohl" entfällt.' },
+
+  { section: 'Futur II – Vermutungen', type: 'mc',
+    prompt: 'Welcher Satz ist im Futur II korrekt gebildet?',
+    options: [
+      'Er wird das Buch schon gelesen.',
+      'Er wird das Buch schon lesen haben.',
+      'Er wird das Buch schon gelesen haben.',
+      'Er wird das Buch schon gelest haben.'
+    ],
+    answer: 2,
+    explanation: 'Futur II = werden + Partizip II + haben/sein. „lesen" → Partizip „gelesen", Perfekt mit „haben".' },
+
+  { section: 'Futur II – Vermutungen', type: 'transform',
+    prompt: 'Formen Sie in Futur II um:\n„Sie ist vermutlich nach Hause gegangen."',
+    answer: ['Sie wird nach Hause gegangen sein'],
+    explanation: '„gehen" bildet das Perfekt mit „sein", deshalb Futur II: „wird … gegangen sein". Das Adverb „vermutlich" entfällt.' },
+
+  // ---- Verbverbindungen (3) ----
+  { section: 'Verbverbindungen mit Infinitiv', type: 'fill',
+    prompt: 'Ergänzen Sie das Partizip:\n„Sie sind öfter mal joggen ___." (gehen)',
+    answer: ['gegangen'],
+    explanation: '„gehen" + Infinitiv bildet das Perfekt normal mit Partizip II („gegangen"). Hilfsverb: sein.' },
+
+  { section: 'Verbverbindungen mit Infinitiv', type: 'fill',
+    prompt: 'Ergänzen Sie – Doppelinfinitiv!\n„Er hat mich auf einem Bein stehen ___." (sehen)',
+    answer: ['sehen'],
+    explanation: '„sehen" und „hören" bilden das Perfekt mit Doppelinfinitiv: „stehen sehen" (nicht „gesehen").' },
+
+  { section: 'Verbverbindungen mit Infinitiv', type: 'mc',
+    prompt: 'Welches Verb passt im Sinne von „eine Fähigkeit erwerben"?\n„Viele Leute ___ Zumba tanzen."',
+    options: ['bleiben', 'gehen', 'lernen', 'hören'],
+    answer: 2,
+    explanation: '„lernen + Infinitiv ohne zu" drückt das Erwerben einer Fähigkeit aus. Perfekt: „haben Zumba tanzen gelernt" (kein Doppelinfinitiv bei „lernen").' },
+
+  // ---- Konjunktiv II (5) ----
+  { section: 'Konjunktiv II – Bedeutungen', type: 'mc',
+    prompt: 'Welche Bedeutung hat der Konjunktiv II in folgendem Satz?\n„Wenn Jana die App nicht verwenden würde, würde sie nicht alle Attraktionen sehen."',
+    options: [
+      'Reale Bedingung (Gegenwart)',
+      'Irreale Bedingung (Gegenwart)',
+      'Irrealer Wunsch (Gegenwart)',
+      'Irrealer Vergleich (Gegenwart)'
+    ],
+    answer: 1,
+    explanation: 'Eine hypothetische, nicht reale Bedingung in der Gegenwart → irreale Bedingung. Realität: Jana verwendet die App und sieht alle Attraktionen.' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'fill',
+    prompt: 'Bilden Sie die Originalform des Konjunktivs II:\nwissen → ich ___',
+    answer: ['wüsste'],
+    explanation: 'Originalform von „wissen" im Konjunktiv II: „wüsste" (Umlaut + -e-Endung). Andere häufige Originalformen: kommen→käme, finden→fände, geben→gäbe.' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'transform',
+    prompt: 'Formen Sie in eine irreale Bedingung (Vergangenheit) um:\n„Jana hat die App verwendet und dadurch alle Attraktionen gesehen."',
+    answer: [
+      'Wenn Jana die App nicht verwendet hätte, hätte sie nicht alle Attraktionen gesehen',
+      'Hätte Jana die App nicht verwendet, hätte sie nicht alle Attraktionen gesehen'
+    ],
+    explanation: 'Irreale Bedingung in der Vergangenheit: „hätte/wäre" im Konjunktiv II + Partizip II. Wenn der Satz ohne „wenn" beginnt, steht „hätte" am Satzanfang.' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'transform',
+    prompt: 'Bilden Sie einen irrealen Wunsch (Gegenwart):\n„Ich möchte in Berlin wohnen."',
+    answer: [
+      'Wenn ich doch in Berlin wohnen könnte',
+      'Wenn ich doch nur in Berlin wohnen könnte',
+      'Könnte ich doch in Berlin wohnen',
+      'Könnte ich doch nur in Berlin wohnen'
+    ],
+    explanation: 'Irrealer Wunsch mit „doch"/„bloß"/„nur" + Konjunktiv II. Möglich mit „wenn" (Verb am Ende) oder ohne „wenn" (Verb am Satzanfang).' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'fill',
+    prompt: 'Ergänzen Sie die Konjunktion (zwei Wörter):\n„Es sieht so aus, ___ die Welle so hoch wie ein Haus wäre."',
+    answer: ['als ob'],
+    explanation: 'Irrealer Vergleich mit „als ob" + Konjunktiv II (wäre). Auch ohne „ob" möglich: „als wäre die Welle so hoch wie ein Haus" (Verb direkt nach „als").' },
+
+  // ---- Adjektive mit festen Präpositionen (5) ----
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Tom ist sehr interessiert ___ der Schweizer Kultur."',
+    answer: ['an'],
+    explanation: '„interessiert an" + Dativ → an der Schweizer Kultur.' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Basel ist stolz ___ seine Kunstsammlung."',
+    answer: ['auf'],
+    explanation: '„stolz auf" + Akkusativ → auf seine Kunstsammlung.' },
+
+  { section: 'Adjektive mit Präposition', type: 'mc',
+    prompt: 'Welche Präposition ist korrekt?\n„Zürich ist bei jüngeren Touristen bekannt ___ sein Nachtleben."',
+    options: ['an', 'auf', 'für', 'von'],
+    answer: 2,
+    explanation: '„bekannt für" + Akkusativ. Vorsicht: „bekannt" kann auch mit „bei + Dativ" stehen (= „beliebt unter"), z.B. „bekannt bei jüngeren Touristen".' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Viele sind überrascht ___ das große Kulturangebot von Basel."',
+    answer: ['über'],
+    explanation: '„überrascht über" + Akkusativ.' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Tom ist ganz verrückt ___ diesem neuen Müsli."',
+    answer: ['nach'],
+    explanation: '„verrückt nach" + Dativ.' },
+
+  // ---- Nomen mit Präposition (3) ----
+  { section: 'Nomen mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Das Bedürfnis ___ sozialer und finanzieller Absicherung ist groß."',
+    answer: ['nach'],
+    explanation: '„das Bedürfnis nach" + Dativ.' },
+
+  { section: 'Nomen mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Die Erinnerung ___ das Zusammenleben mit beiden Eltern bleibt."',
+    answer: ['an'],
+    explanation: '„die Erinnerung an" + Akkusativ. Vgl. das Verb „sich erinnern an + Akk."' },
+
+  { section: 'Nomen mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Die Vorstellung ___ der Verantwortung macht Partnern oft Angst."',
+    answer: ['von'],
+    explanation: '„die Vorstellung von" + Dativ.' },
+
+  // ---- Indirekte Rede (4) ----
+  { section: 'Indirekte Rede', type: 'transform',
+    prompt: 'Formen Sie in indirekte Rede um (Konjunktiv I):\nLucy sagt: „Jo ist meine jüngere Schwester."',
+    answer: [
+      'Lucy sagt, Jo sei ihre jüngere Schwester',
+      'Lucy sagt, dass Jo ihre jüngere Schwester sei'
+    ],
+    explanation: 'Konjunktiv I 3. Pers. Sg. von „sein" = „sei". Das Possessivpronomen wird angepasst: meine → ihre.' },
+
+  { section: 'Indirekte Rede', type: 'fill',
+    prompt: 'Konjunktiv I, 1. Person Singular von „sein":\nich ___',
+    answer: ['sei'],
+    explanation: '„ich sei" (Konjunktiv I). Diese Form ist eindeutig vom Indikativ („ich bin") unterscheidbar.' },
+
+  { section: 'Indirekte Rede', type: 'mc',
+    prompt: 'Was schreibt man in der indirekten Rede für „wir haben"?\nHinweis: Konjunktiv I „wir haben" = Indikativ.',
+    options: ['wir haben', 'wir habe', 'wir hätten', 'wir hatten'],
+    answer: 2,
+    explanation: 'Wenn die K-I-Form mit dem Indikativ identisch ist, weicht man auf den Konjunktiv II aus → „wir hätten".' },
+
+  { section: 'Indirekte Rede', type: 'transform',
+    prompt: 'Formen Sie in indirekte Rede um (Vergangenheit):\nEr sagt: „Sie hat ihn verlassen."',
+    answer: [
+      'Er sagt, sie habe ihn verlassen',
+      'Er sagt, dass sie ihn verlassen habe'
+    ],
+    explanation: 'Vergangenheit in der indirekten Rede: „haben/sein" im Konjunktiv I + Partizip Perfekt → „sie habe … verlassen".' },
+
+  // ---- Generalisierende Relativsätze (2) ----
+  { section: 'Generalisierende Relativsätze', type: 'fill',
+    prompt: 'Ergänzen Sie das Relativpronomen:\n„___ sich nicht trennen will, (der) kann zu einer Verlängerung der Ehe „Ja" sagen."',
+    answer: ['wer'],
+    explanation: '„Wer" für allgemeingültige Aussagen im Nominativ. Da Relativ- und Demonstrativpronomen im gleichen Kasus (Nom.) stehen, kann „der" wegfallen.' },
+
+  { section: 'Generalisierende Relativsätze', type: 'fill',
+    prompt: 'Ergänzen Sie:\n„___ das Eheleben nicht gefällt, der könnte mit der „Ehe auf Zeit" glücklich werden."',
+    answer: ['wem'],
+    explanation: '„gefallen" verlangt den Dativ → „Wem". Da die Kasus verschieden sind (Dat. vs. Nom.), ist „der" obligatorisch.' },
+
+  // ---- je ... desto/umso (2) ----
+  { section: 'Vergleichssätze (je … desto)', type: 'fill',
+    prompt: 'Ergänzen Sie:\n„Je entspannter Sie miteinander umgehen, ___ wohler fühlen Sie sich."',
+    answer: ['desto', 'umso'],
+    explanation: 'Nach „je + Komparativ" folgt im Hauptsatz „desto" oder „umso" + Komparativ. Beide sind möglich.' },
+
+  { section: 'Vergleichssätze (je … desto)', type: 'transform',
+    prompt: 'Bilden Sie einen Satz mit „je … desto …":\nSie telefonieren viel miteinander. → Sie kennen sich gut.',
+    answer: [
+      'Je mehr Sie miteinander telefonieren, desto besser kennen Sie sich',
+      'Je mehr Sie miteinander telefonieren, umso besser kennen Sie sich'
+    ],
+    explanation: 'Ohne Adjektiv → „je mehr". Im Hauptsatz: „desto/umso" + Komparativ + Verb an Position 2 (kennen) + Subjekt.' },
+
+  // ---- Subjektives sollen (2) ----
+  { section: 'Subjektives „sollen"', type: 'transform',
+    prompt: 'Formen Sie mit subjektivem „sollen" um (Hörensagen):\n„Laut einer Studie verzehrt jeder über 88 kg Fleisch im Jahr."',
+    answer: [
+      'Mittlerweile soll jeder über 88 kg Fleisch im Jahr verzehren',
+      'Jeder soll über 88 kg Fleisch im Jahr verzehren',
+      'Laut einer Studie soll jeder über 88 kg Fleisch im Jahr verzehren'
+    ],
+    explanation: 'Subjektives „sollen" drückt Hörensagen aus. Konstruktion: Subjekt + soll + … + Infinitiv.' },
+
+  { section: 'Subjektives „sollen"', type: 'mc',
+    prompt: 'Was bedeutet „sollen" hier?\n„Millionen von Menschen sollen diesen Ernährungsstil übernommen haben."',
+    options: [
+      'Sie haben die Pflicht, ihn zu übernehmen.',
+      'Es heißt / wird berichtet, dass sie ihn übernommen haben.',
+      'Es ist wahrscheinlich, dass sie ihn übernehmen werden.',
+      'Sie wollen ihn übernehmen.'
+    ],
+    answer: 1,
+    explanation: 'Subjektives „sollen" gibt wieder, was man gehört oder gelesen hat (Hörensagen).' },
+
+  // ---- Nominalisierung (3) ----
+  { section: 'Nominalisierung von Verben', type: 'fill',
+    prompt: 'Bilden Sie das Nomen (mit Artikel):\nanbauen → ___',
+    answer: ['der Anbau'],
+    explanation: 'Nominalisierung vom Verbstamm ohne Endung → maskulin: „der Anbau".' },
+
+  { section: 'Nominalisierung von Verben', type: 'fill',
+    prompt: 'Bilden Sie das Nomen (mit Artikel):\nernten → ___',
+    answer: ['die Ernte'],
+    explanation: 'Nominalisierung mit Endung -e → feminin: „die Ernte".' },
+
+  { section: 'Nominalisierung von Verben', type: 'mc',
+    prompt: 'Welches Nomen wird mit der Vorsilbe Ge- gebildet?',
+    options: [
+      'essen → das Essen',
+      'ernten → die Ernte',
+      'trinken → das Getränk',
+      'anbauen → der Anbau'
+    ],
+    answer: 2,
+    explanation: '„Ge-" ist eine produktive Vorsilbe zur Nominalisierung (das Getränk, der Geschmack).' },
+
+  // ---- Konditional (2) ----
+  { section: 'Konditionale Zusammenhänge', type: 'transform',
+    prompt: 'Nominalisieren Sie den Konditionalsatz:\n„Wenn man ein Produkt teuer verkauft, muss das Etikett stimmen."',
+    answer: [
+      'Beim Verkauf eines teuren Produkts muss das Etikett stimmen',
+      'Beim Verkauf eines teuren Produktes muss das Etikett stimmen'
+    ],
+    explanation: 'Verbaler „wenn"-Satz → nominal mit „bei + Dativ".' },
+
+  { section: 'Konditionale Zusammenhänge', type: 'fill',
+    prompt: 'Ergänzen Sie einen konditionalen Konnektor (nicht „wenn"):\n„___ man unzufrieden ist, sollte man das Produkt reklamieren."',
+    answer: ['falls', 'sofern'],
+    explanation: '„Falls" und „sofern" sind konditionale Konnektoren (≈ wenn). „Sofern" ist formeller.' },
+
+  // ---- Konzessiv (3) ----
+  { section: 'Konzessive Zusammenhänge', type: 'fill',
+    prompt: 'Ergänzen Sie einen konzessiven Konnektor:\n„Viele werfen Obst weg, ___ es nur kleine Makel aufweist."',
+    answer: ['obwohl', 'selbst wenn', 'auch wenn'],
+    explanation: 'Konzessive Konnektoren: „obwohl" (Tatsache), „selbst/auch wenn" (auch im Extremfall).' },
+
+  { section: 'Konzessive Zusammenhänge', type: 'fill',
+    prompt: 'Ergänzen Sie die konzessive Präposition:\n„___ gleicher Qualität sind die Haltbarkeitsdaten sehr unterschiedlich."',
+    answer: ['trotz'],
+    explanation: 'Konzessive Präposition „trotz" + Genitiv (umgangssprachlich auch mit Dativ).' },
+
+  { section: 'Konzessive Zusammenhänge', type: 'mc',
+    prompt: 'Welche Funktion haben konzessive Konnektoren wie „obwohl", „trotzdem" oder „dennoch"?',
+    options: [
+      'Sie drücken eine Bedingung aus.',
+      'Sie drücken einen Grund aus.',
+      'Sie drücken einen Gegensatz / etwas Kontroverses aus.',
+      'Sie drücken eine Folge aus.'
+    ],
+    answer: 2,
+    explanation: 'Konzessive Konnektoren signalisieren einen Gegensatz: Etwas gilt trotz einer einschränkenden Bedingung.' },
+
+  // ---- Wortschatz L5 (2) ----
+  { section: 'Wortschatz – Lektion 5', type: 'mc',
+    prompt: 'Was bedeutet „abraten von"?',
+    options: ['to advise to', 'to advise against', 'to leave alone', 'to ask for advice'],
+    answer: 1,
+    explanation: '„abraten von" + Dativ = jemandem von etwas abraten.' },
+
+  { section: 'Wortschatz – Lektion 5', type: 'fill',
+    prompt: 'Wie heißt das Verb auf Deutsch? „to exaggerate" → ___ (Infinitiv)',
+    answer: ['übertreiben'],
+    explanation: 'übertreiben, übertrieb, hat übertrieben.' },
+
+  // ---- Wortschatz L6 (2) ----
+  { section: 'Wortschatz – Lektion 6', type: 'mc',
+    prompt: 'Was bedeutet „gebürtig"?',
+    options: ['geboren werdend', 'von Geburt aus / native-born', 'schwanger', 'jung'],
+    answer: 1,
+    explanation: '„gebürtig" (Adj.) = von Geburt aus stammend, z. B. „ein gebürtiger Berliner".' },
+
+  { section: 'Wortschatz – Lektion 6', type: 'mc',
+    prompt: 'Was bedeutet „mittelalterlich"?',
+    options: ['mittelmäßig', 'aus dem Mittelalter / medieval', 'mittleren Alters', 'mittelfristig'],
+    answer: 1,
+    explanation: '„mittelalterlich" = aus dem Mittelalter stammend (medieval).' },
+
+  // ---- Wortschatz L7 (3) ----
+  { section: 'Wortschatz – Lektion 7', type: 'mc',
+    prompt: 'Was bedeutet „die Patchwork-Familie"?',
+    options: [
+      'eine sehr große Familie mit vielen Kindern',
+      'eine Familie, in der mindestens ein Elternteil Kinder aus einer früheren Beziehung mitbringt',
+      'eine Familie, die in mehreren Ländern lebt',
+      'eine Familie ohne Kinder'
+    ],
+    answer: 1,
+    explanation: 'Patchwork-Familie = „Flickenteppich-Familie", neu zusammengesetzte Familie mit Kindern aus früheren Beziehungen.' },
+
+  { section: 'Wortschatz – Lektion 7', type: 'fill',
+    prompt: 'Wie heißt das Nomen auf Deutsch? „long-distance relationship" → ___ (mit Artikel)',
+    answer: ['die Fernbeziehung'],
+    explanation: '„die Fernbeziehung, -en" = romantische Beziehung über große Entfernung.' },
+
+  { section: 'Wortschatz – Lektion 7', type: 'mc',
+    prompt: 'Was bedeutet „sich entfremden"?',
+    options: [
+      'sich näherkommen',
+      'sich auseinanderentwickeln, sich fremd werden',
+      'sich anfreunden',
+      'sich verlieben'
+    ],
+    answer: 1,
+    explanation: '„sich entfremden" = sich auseinanderleben, einander fremd werden („to grow apart").' },
+
+  // ---- Wortschatz L8 (3) ----
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet „verzehren"?',
+    options: ['abnutzen', 'Speisen essen / konsumieren', 'verdauen', 'kosten / probieren'],
+    answer: 1,
+    explanation: '„verzehren" = (gehoben) essen, Speisen zu sich nehmen. Z. B. „jeder verzehrt 88 kg Fleisch im Jahr".' },
+
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet „vermeidbar"?',
+    options: ['unvermeidlich', 'vermeidbar / kann verhindert werden', 'verdorben', 'verboten'],
+    answer: 1,
+    explanation: '„vermeidbar" = kann vermieden werden (avoidable). Gegenteil: unvermeidlich.' },
+
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet die Wendung „meines Erachtens"?',
+    options: [
+      'in meiner Erinnerung',
+      'meiner Meinung nach',
+      'aus meiner Erfahrung',
+      'in meiner Abwesenheit'
+    ],
+    answer: 1,
+    explanation: '„meines Erachtens" (m. E.) = meiner Meinung nach (formell, „in my opinion").' }
+];
+
+// ===============================================================
+// TEST B — 50 questions
+// ===============================================================
+const questionsB = [
+  // ---- lassen (3) ----
+  { section: 'Das Verb „lassen"', type: 'mc',
+    prompt: 'Welche Bedeutung hat „lassen" in folgendem Satz?\n„Man kann diese Aktion auch sein/bleiben lassen."',
+    options: [
+      'anderen etwas erlauben',
+      'andere mit etwas beauftragen',
+      'etwas ist möglich (passivisch)',
+      'etwas nicht machen, nichts verändern'
+    ],
+    answer: 3,
+    explanation: 'Bedeutung 4: „sein/bleiben lassen" = etwas nicht (mehr) machen, nichts verändern.' },
+
+  { section: 'Das Verb „lassen"', type: 'transform',
+    prompt: 'Formen Sie um mit „sich … lassen" (Bedeutung: „kann gemacht werden"):\n„Man kann diese Aufgabe leicht lösen."',
+    answer: [
+      'Diese Aufgabe lässt sich leicht lösen',
+      'Die Aufgabe lässt sich leicht lösen'
+    ],
+    explanation: 'Bedeutung 3: „sich + lassen + Infinitiv" ist eine Passiv-Alternative („kann gemacht werden").' },
+
+  { section: 'Das Verb „lassen"', type: 'fill',
+    prompt: 'Ergänzen Sie das Perfekt – Doppelinfinitiv!\n„Ich habe meine Haare schneiden ___."',
+    answer: ['lassen'],
+    explanation: '„lassen" + Infinitiv im Perfekt = Doppelinfinitiv: „schneiden lassen". Hilfsverb: haben.' },
+
+  // ---- Futur II (3) ----
+  { section: 'Futur II – Vermutungen', type: 'transform',
+    prompt: 'Formen Sie in Futur II um:\n„Er hat wahrscheinlich den Zug verpasst."',
+    answer: ['Er wird den Zug verpasst haben'],
+    explanation: 'Futur II = werden + Partizip II + haben/sein. „verpassen" → Perfekt mit „haben". Das Adverb „wahrscheinlich" entfällt.' },
+
+  { section: 'Futur II – Vermutungen', type: 'fill',
+    prompt: 'Ergänzen Sie das Hilfsverb am Satzende:\n„Sie wird wahrscheinlich schon angekommen ___."',
+    answer: ['sein'],
+    explanation: '„ankommen" bildet das Perfekt mit „sein" → Futur II: wird … angekommen sein.' },
+
+  { section: 'Futur II – Vermutungen', type: 'mc',
+    prompt: 'Welches Hilfsverb ist korrekt?\n„Er wird den Film schon gesehen ___."',
+    options: ['sein', 'haben', 'werden', 'hatte'],
+    answer: 1,
+    explanation: '„sehen" bildet das Perfekt mit „haben", deshalb Futur II: „wird … gesehen haben".' },
+
+  // ---- Verbverbindungen (3) ----
+  { section: 'Verbverbindungen mit Infinitiv', type: 'fill',
+    prompt: 'Ergänzen Sie das Partizip:\n„Sie ist sofort stehen ___." (bleiben)',
+    answer: ['geblieben'],
+    explanation: '„bleiben" + Infinitiv: Perfekt mit Partizip II („geblieben"), Hilfsverb „sein". Kein Doppelinfinitiv.' },
+
+  { section: 'Verbverbindungen mit Infinitiv', type: 'fill',
+    prompt: 'Ergänzen Sie – Doppelinfinitiv!\n„Wir haben sie singen ___." (hören)',
+    answer: ['hören'],
+    explanation: '„hören" + Infinitiv bildet das Perfekt mit Doppelinfinitiv: „singen hören" (nicht „gehört").' },
+
+  { section: 'Verbverbindungen mit Infinitiv', type: 'mc',
+    prompt: 'Welches Verb bildet das Perfekt mit Doppelinfinitiv?',
+    options: ['gehen', 'lernen', 'bleiben', 'sehen'],
+    answer: 3,
+    explanation: 'Nur „sehen" und „hören" bilden das Perfekt mit Doppelinfinitiv. „gehen / lernen / bleiben" verwenden das normale Partizip II.' },
+
+  // ---- Konjunktiv II (5) ----
+  { section: 'Konjunktiv II – Bedeutungen', type: 'fill',
+    prompt: 'Bilden Sie die Originalform des Konjunktivs II:\nkommen → ich ___',
+    answer: ['käme'],
+    explanation: 'Originalform von „kommen" im Konjunktiv II: „käme" (Umlaut + -e).' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'mc',
+    prompt: 'Welche Bedeutung hat der Konjunktiv II hier?\n„Wäre ich bloß in Köln geblieben!"',
+    options: [
+      'Irreale Bedingung (Gegenwart)',
+      'Irrealer Wunsch (Gegenwart)',
+      'Irrealer Wunsch (Vergangenheit)',
+      'Irrealer Vergleich (Vergangenheit)'
+    ],
+    answer: 2,
+    explanation: 'Irrealer Wunsch in der Vergangenheit, mit „bloß"/„doch"/„nur" + „wäre" + Partizip II. Realität: Sie/Er ist nicht in Köln geblieben.' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'transform',
+    prompt: 'Formen Sie in eine irreale Bedingung (Gegenwart) um:\n„Ich bin nicht reich, deshalb kann ich kein Haus kaufen."',
+    answer: [
+      'Wenn ich reich wäre, könnte ich ein Haus kaufen',
+      'Wäre ich reich, könnte ich ein Haus kaufen'
+    ],
+    explanation: 'Irreale Bedingung Gegenwart: „wäre/hätte + …, würde/könnte + Infinitiv". „sein" und Modalverben benutzt man immer in der Originalform.' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'transform',
+    prompt: 'Bilden Sie einen irrealen Vergleich (Vergangenheit) mit „als ob":\n„Die Welle war so hoch wie ein Haus."',
+    answer: [
+      'Es sah so aus, als ob die Welle so hoch wie ein Haus gewesen wäre',
+      'Es sah so aus, als wäre die Welle so hoch wie ein Haus gewesen'
+    ],
+    explanation: 'Irrealer Vergleich Vergangenheit: „als ob" + Partizip II + „wäre/hätte", oder ohne „ob": „als wäre … gewesen".' },
+
+  { section: 'Konjunktiv II – Bedeutungen', type: 'mc',
+    prompt: 'Bei welchen Verben benutzt man immer die Originalform des Konjunktivs II (nicht „würde + Infinitiv")?',
+    options: [
+      'Nur bei sein und haben',
+      'Nur bei Modalverben',
+      'Bei sein, haben und Modalverben (könnte, müsste, dürfte, wollte, sollte)',
+      'Bei allen Verben'
+    ],
+    answer: 2,
+    explanation: 'Bei „sein" (wäre), „haben" (hätte) und Modalverben (könnte, müsste, dürfte, wollte, sollte) verwendet man immer die Originalform.' },
+
+  // ---- Adjektive mit festen Präpositionen (6) ----
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Er ist eifersüchtig ___ seinen Bruder."',
+    answer: ['auf'],
+    explanation: '„eifersüchtig auf" + Akkusativ.' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Sie ist süchtig ___ Schokolade."',
+    answer: ['nach'],
+    explanation: '„süchtig nach" + Dativ.' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Wir sind sehr stolz ___ unsere Tochter."',
+    answer: ['auf'],
+    explanation: '„stolz auf" + Akkusativ.' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Ich bin nicht einverstanden ___ deinem Vorschlag."',
+    answer: ['mit'],
+    explanation: '„einverstanden mit" + Dativ.' },
+
+  { section: 'Adjektive mit Präposition', type: 'mc',
+    prompt: 'Welche Präposition passt?\n„Sie ist verliebt ___ einen Italiener."',
+    options: ['mit', 'auf', 'in', 'von'],
+    answer: 2,
+    explanation: '„verliebt in" + Akkusativ (Bewegung/Richtung der Gefühle → Akk.).' },
+
+  { section: 'Adjektive mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Wir sind alle erstaunt ___ deine Entscheidung."',
+    answer: ['über'],
+    explanation: '„erstaunt über" + Akkusativ (wie auch „überrascht über", „froh über", „glücklich über").' },
+
+  // ---- Nomen mit Präposition (3) ----
+  { section: 'Nomen mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Die Sehnsucht ___ einem ruhigen Leben wächst."',
+    answer: ['nach'],
+    explanation: '„die Sehnsucht nach" + Dativ.' },
+
+  { section: 'Nomen mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Sie nimmt Bezug ___ den letzten Bericht."',
+    answer: ['auf'],
+    explanation: '„Bezug nehmen auf" + Akkusativ. Auch das Nomen „der Bezug auf" + Akk.' },
+
+  { section: 'Nomen mit Präposition', type: 'fill',
+    prompt: 'Ergänzen Sie die Präposition:\n„Die Reaktion ___ die Nachricht war heftig."',
+    answer: ['auf'],
+    explanation: '„die Reaktion auf" + Akkusativ.' },
+
+  // ---- Indirekte Rede (3) ----
+  { section: 'Indirekte Rede', type: 'fill',
+    prompt: 'Konjunktiv I, 3. Person Singular von „haben":\ner/sie/es ___',
+    answer: ['habe'],
+    explanation: '„er/sie/es habe" (Konjunktiv I) – eindeutig vom Indikativ („hat") unterscheidbar.' },
+
+  { section: 'Indirekte Rede', type: 'transform',
+    prompt: 'Formen Sie in indirekte Rede um:\nEr sagt: „Ich gehe nach Hause."',
+    answer: [
+      'Er sagt, er gehe nach Hause',
+      'Er sagt, dass er nach Hause gehe'
+    ],
+    explanation: 'Konjunktiv I 3. Pers. Sg. von „gehen" = „gehe". Pronomenwechsel: ich → er.' },
+
+  { section: 'Indirekte Rede', type: 'mc',
+    prompt: 'Wann verwendet man in der indirekten Rede den Konjunktiv II statt des Konjunktivs I?',
+    options: [
+      'Wenn der Sprecher unsicher ist.',
+      'Wenn die K-I-Form mit dem Indikativ identisch ist.',
+      'Wenn die Aussage in der Vergangenheit liegt.',
+      'Wenn der Satz mit „dass" beginnt.'
+    ],
+    answer: 1,
+    explanation: 'Der Konjunktiv II ersetzt den Konjunktiv I, wenn dieser nicht vom Indikativ unterscheidbar ist (z. B. „wir haben" → „wir hätten").' },
+
+  // ---- Generalisierende Relativsätze (2) ----
+  { section: 'Generalisierende Relativsätze', type: 'fill',
+    prompt: 'Ergänzen Sie das Relativpronomen:\n„___ viel arbeitet, (der) sollte auch ausreichend Pause machen."',
+    answer: ['wer'],
+    explanation: '„Wer" im Nominativ. Da Relativ- und Demonstrativpronomen im selben Kasus stehen, kann „der" wegfallen.' },
+
+  { section: 'Generalisierende Relativsätze', type: 'fill',
+    prompt: 'Ergänzen Sie:\n„___ ich vertraue, dem erzähle ich alles."',
+    answer: ['wem'],
+    explanation: '„vertrauen" verlangt den Dativ → „Wem". Die Kasus (Dat. / Dat.) sind hier identisch, aber das Demonstrativpronomen „dem" steht zur Klarheit.' },
+
+  // ---- je…desto (2) ----
+  { section: 'Vergleichssätze (je … desto)', type: 'transform',
+    prompt: 'Bilden Sie einen Satz mit „je … desto …":\nSie machen viel Sport. → Sie sind fit.',
+    answer: [
+      'Je mehr Sport Sie machen, desto fitter sind Sie',
+      'Je mehr Sport Sie machen, umso fitter sind Sie'
+    ],
+    explanation: '„viel" → Komparativ „mehr". Im Hauptsatz: „desto/umso" + Komparativ + Verb + Subjekt.' },
+
+  { section: 'Vergleichssätze (je … desto)', type: 'fill',
+    prompt: 'Ergänzen Sie:\n„Je länger man wartet, ___ ungeduldiger wird man."',
+    answer: ['desto', 'umso'],
+    explanation: 'Nach „je + Komparativ" folgt „desto" oder „umso" + Komparativ im Hauptsatz.' },
+
+  // ---- sollen subjektiv (2) ----
+  { section: 'Subjektives „sollen"', type: 'mc',
+    prompt: 'Was bedeutet „sollen" in folgendem Satz?\n„Er soll viel Geld haben."',
+    options: [
+      'Er muss viel Geld haben (Pflicht).',
+      'Man hat gehört, dass er viel Geld hat (Hörensagen).',
+      'Er möchte viel Geld haben.',
+      'Er wird viel Geld haben.'
+    ],
+    answer: 1,
+    explanation: 'Subjektives „sollen" = Hörensagen / man hat es gehört oder gelesen.' },
+
+  { section: 'Subjektives „sollen"', type: 'transform',
+    prompt: 'Formen Sie mit subjektivem „sollen" um:\n„Es wird behauptet, dass die Wirtschaft wächst."',
+    answer: [
+      'Die Wirtschaft soll wachsen'
+    ],
+    explanation: 'Subjektives „sollen" (Gegenwart): Subjekt + soll + Infinitiv.' },
+
+  // ---- Nominalisierung (2) ----
+  { section: 'Nominalisierung von Verben', type: 'fill',
+    prompt: 'Bilden Sie das Nomen (mit Artikel):\nerzeugen → ___ (Person, die erzeugt)',
+    answer: ['der Erzeuger'],
+    explanation: 'Nominalisierung mit der Endung -er → maskulin: „der Erzeuger" (= Produzent).' },
+
+  { section: 'Nominalisierung von Verben', type: 'fill',
+    prompt: 'Bilden Sie das Nomen (mit Artikel):\nessen → ___',
+    answer: ['das Essen'],
+    explanation: 'Nominalisierung vom Infinitiv → neutral: „das Essen".' },
+
+  // ---- Konditional (2) ----
+  { section: 'Konditionale Zusammenhänge', type: 'fill',
+    prompt: 'Ergänzen Sie einen konditionalen Konnektor (formell):\n„___ Sie daran interessiert sind, erhalten Sie weitere Informationen."',
+    answer: ['sofern', 'falls', 'wenn'],
+    explanation: '„Sofern" ist besonders formell und drückt eine eingeschränkte Bedingung aus. „Falls" und „wenn" sind ebenfalls möglich.' },
+
+  { section: 'Konditionale Zusammenhänge', type: 'transform',
+    prompt: 'Nominalisieren Sie mit „bei + Dativ":\n„Wenn man schnell hilft, kann man Leben retten."',
+    answer: [
+      'Bei schneller Hilfe kann man Leben retten'
+    ],
+    explanation: 'Verbaler „wenn"-Satz → nominal mit „bei + Dativ": „schnell helfen" → „bei schneller Hilfe".' },
+
+  // ---- Konzessiv (2) ----
+  { section: 'Konzessive Zusammenhänge', type: 'fill',
+    prompt: 'Ergänzen Sie einen konzessiven Konnektor:\n„___ er sehr müde war, ist er ins Kino gegangen."',
+    answer: ['obwohl'],
+    explanation: '„Obwohl" leitet einen Nebensatz ein, in dem eine Tatsache steht, die gegen die Aussage des Hauptsatzes spricht.' },
+
+  { section: 'Konzessive Zusammenhänge', type: 'transform',
+    prompt: 'Formen Sie mit „trotzdem" (zwei Hauptsätze) um:\n„Obwohl es regnete, gingen wir spazieren."',
+    answer: [
+      'Es regnete. Trotzdem gingen wir spazieren',
+      'Es regnete. Dennoch gingen wir spazieren'
+    ],
+    explanation: '„Trotzdem"/„dennoch" verbinden zwei Hauptsätze. Sie stehen auf Position 1, das Verb folgt direkt (Position 2).' },
+
+  // ---- Wortschatz L5 (2) ----
+  { section: 'Wortschatz – Lektion 5', type: 'mc',
+    prompt: 'Was bedeutet „souverän"?',
+    options: ['unsicher', 'sicher und selbstbewusst auftretend', 'königlich', 'einsam'],
+    answer: 1,
+    explanation: '„souverän" = selbstbewusst, sicher im Auftreten („confident").' },
+
+  { section: 'Wortschatz – Lektion 5', type: 'mc',
+    prompt: 'Was bedeutet die Redewendung „etwas hängt einem zum Hals heraus"?',
+    options: [
+      'jemand ist krank',
+      'man hat genug davon / ist es leid',
+      'etwas schmeckt schlecht',
+      'man hat Angst vor etwas'
+    ],
+    answer: 1,
+    explanation: '„etwas hängt einem zum Hals heraus" = man hat es satt, man ist es leid („to be fed up with sth").' },
+
+  // ---- Wortschatz L6 (2) ----
+  { section: 'Wortschatz – Lektion 6', type: 'mc',
+    prompt: 'Was bedeutet „kulinarisch"?',
+    options: ['kulturell', 'kühl', 'die Küche / das Essen betreffend', 'kunsthandwerklich'],
+    answer: 2,
+    explanation: '„kulinarisch" = die Kochkunst, das Essen oder die Gastronomie betreffend.' },
+
+  { section: 'Wortschatz – Lektion 6', type: 'mc',
+    prompt: 'Was ist „ein Imbissstand"?',
+    options: [
+      'ein Stand mit Souvenirs',
+      'ein kleiner Stand mit schnellen, einfachen Speisen (snack stand)',
+      'ein Marktstand mit Obst',
+      'ein Informationsschalter'
+    ],
+    answer: 1,
+    explanation: '„der Imbissstand, -̈e" = kleiner Verkaufsstand für schnelle Speisen (Würstchen, Pommes …).' },
+
+  // ---- Wortschatz L7 (3) ----
+  { section: 'Wortschatz – Lektion 7', type: 'mc',
+    prompt: 'Was bedeutet „die Sehnsucht"?',
+    options: ['das Sehen', 'starkes Verlangen / Heimweh-Gefühl (longing)', 'die Suche', 'die Vorsicht'],
+    answer: 1,
+    explanation: '„die Sehnsucht, -̈e" = inniges, oft schmerzliches Verlangen nach etwas oder jemandem.' },
+
+  { section: 'Wortschatz – Lektion 7', type: 'mc',
+    prompt: 'Was bedeutet „umgehen mit"?',
+    options: [
+      'um etwas herumgehen',
+      'umziehen mit jemandem',
+      'mit etwas/jemandem zurechtkommen, etwas handhaben',
+      'jemanden meiden'
+    ],
+    answer: 2,
+    explanation: '„umgehen mit" (ging um, ist umgegangen) + Dat. = handhaben, behandeln („to deal with"). Z. B. „mit Geld umgehen können".' },
+
+  { section: 'Wortschatz – Lektion 7', type: 'mc',
+    prompt: 'Was ist „ein Befürworter"?',
+    options: [
+      'eine Person, die etwas ablehnt',
+      'eine Person, die etwas unterstützt / dafür ist',
+      'eine Person, die etwas erfindet',
+      'eine Person, die etwas erklärt'
+    ],
+    answer: 1,
+    explanation: '„der Befürworter, -" = jemand, der eine Idee oder Sache unterstützt („supporter"). Gegenteil: der Gegner.' },
+
+  // ---- Wortschatz L8 (5) ----
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was ist „die Mindesthaltbarkeit"?',
+    options: [
+      'das Datum, an dem ein Produkt verdirbt',
+      'das Datum, bis zu dem ein Produkt mindestens haltbar ist (best-before date)',
+      'die Mindestmenge eines Produkts',
+      'die maximale Lagerdauer'
+    ],
+    answer: 1,
+    explanation: '„die Mindesthaltbarkeit" gibt an, bis wann ein Produkt mindestens hält – nicht das absolute Verfallsdatum.' },
+
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet „ertragreich"?',
+    options: ['ärmlich', 'einträglich, mit hohem Ertrag (productive)', 'ertragbar / aushaltbar', 'eindrucksvoll'],
+    answer: 1,
+    explanation: '„ertragreich" = viel Gewinn oder Ertrag bringend („high-yield, productive"), z. B. eine ertragreiche Ernte.' },
+
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet die Wendung „in vollem Gange sein"?',
+    options: [
+      'voll besetzt sein',
+      'gerade aktiv stattfinden / in vollem Schwung sein',
+      'völlig leer sein',
+      'gerade zu Ende gehen'
+    ],
+    answer: 1,
+    explanation: '„etwas ist in vollem Gange" = etwas läuft gerade auf Hochtouren, hat seinen Höhepunkt erreicht („in full swing").' },
+
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet „jemandem etwas zufügen"?',
+    options: [
+      'jemandem etwas geben',
+      'jemandem (oft Negatives) antun, verursachen',
+      'etwas hinzufügen',
+      'jemanden treffen'
+    ],
+    answer: 1,
+    explanation: '„jemandem etwas zufügen" = jemandem (meist Schaden, Leid, Schmerz) antun („to inflict on").' },
+
+  { section: 'Wortschatz – Lektion 8', type: 'mc',
+    prompt: 'Was bedeutet „verderblich"?',
+    options: ['unbrauchbar', 'leicht verderbend (perishable)', 'verboten', 'sehr alt'],
+    answer: 1,
+    explanation: '„verderblich" = leicht verderbend, kurz haltbar („perishable"), z. B. Fleisch oder Milch.' }
+];
+
+const testBanks = { A: questionsA, B: questionsB };
+let currentQuestions = null;
+let currentTestName = null;
+
+// ---------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------
+const form = document.getElementById('quizForm');
+const actions = document.getElementById('actions');
+const intro = document.getElementById('intro');
+const resultsEl = document.getElementById('results');
+const submitBtn = document.getElementById('submitBtn');
+
+function renderQuiz() {
+  let html = `<div class="test-label">Test ${currentTestName} · ${currentQuestions.length} Aufgaben</div>`;
+  let lastSection = null;
+  currentQuestions.forEach((q, i) => {
+    if (q.section !== lastSection) {
+      html += `<div class="section-header">${escapeHtml(q.section)}</div>`;
+      lastSection = q.section;
+    }
+    html += `<div class="question" id="q${i}" data-idx="${i}">
+      <div class="qnum">Aufgabe ${i + 1} von ${currentQuestions.length}</div>
+      <div class="prompt">${escapeHtml(q.prompt)}</div>
+      ${renderInput(q, i)}
+    </div>`;
+  });
+  form.innerHTML = html;
+}
+
+function renderInput(q, i) {
+  if (q.type === 'mc') {
+    return `<div class="options">` + q.options.map((opt, j) =>
+      `<label><input type="radio" name="q${i}" value="${j}"> <span>${escapeHtml(opt)}</span></label>`
+    ).join('') + `</div>`;
+  }
+  if (q.type === 'transform') {
+    return `<textarea name="q${i}" placeholder="Ihre Antwort…"></textarea>`;
+  }
+  return `<input type="text" name="q${i}" autocomplete="off" placeholder="Ihre Antwort…">`;
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ---------------------------------------------------------------
+// Grading
+// ---------------------------------------------------------------
+function normalize(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[„""»«]/g, '"')
+    .replace(/[‚''›‹]/g, "'")
+    .replace(/[–—]/g, '-')
+    .replace(/ß/g, 'ss')
+    .replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/ü/g, 'u')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([.,;:!?])\s*/g, '$1')
+    .replace(/[.,!?;:"']+$/g, '')
+    .trim();
+}
+
+function isCorrect(q, userValue) {
+  if (userValue === null || userValue === undefined || userValue === '') return false;
+  if (q.type === 'mc') return Number(userValue) === q.answer;
+  const u = normalize(userValue);
+  return q.answer.some(a => normalize(a) === u);
+}
+
+function getUserValue(i, q) {
+  if (q.type === 'mc') {
+    const sel = form.querySelector(`input[name="q${i}"]:checked`);
+    return sel ? sel.value : null;
+  }
+  const el = form.querySelector(`[name="q${i}"]`);
+  return el ? el.value.trim() : '';
+}
+
+function gradeAll() {
+  let correct = 0;
+  const details = currentQuestions.map((q, i) => {
+    const userValue = getUserValue(i, q);
+    const answered = userValue !== '' && userValue !== null;
+    const ok = answered && isCorrect(q, userValue);
+    if (ok) correct++;
+    return { i, q, userValue, answered, ok };
+  });
+  return { correct, total: currentQuestions.length, details };
+}
+
+function renderResults({ correct, total, details }) {
+  const pct = Math.round((correct / total) * 100);
+  let html = `<div class="results-summary">
+    <div>Test ${currentTestName} – Ergebnis</div>
+    <div class="score">${correct} / ${total}</div>
+    <div class="pct">${pct}% korrekt</div>
+  </div>`;
+
+  let lastSection = null;
+  details.forEach(({ i, q, userValue, answered, ok }) => {
+    if (q.section !== lastSection) {
+      html += `<div class="section-header">${escapeHtml(q.section)}</div>`;
+      lastSection = q.section;
+    }
+    const cls = !answered ? 'unanswered' : ok ? 'correct' : 'incorrect';
+    const userDisplay = formatUserAnswer(q, userValue, answered);
+    const correctDisplay = formatCorrectAnswer(q);
+    const statusLabel = !answered ? 'Nicht beantwortet' : ok ? '✓ Richtig' : '✗ Falsch';
+
+    html += `<div class="question ${cls}">
+      <div class="qnum">Aufgabe ${i + 1} · ${statusLabel}</div>
+      <div class="prompt">${escapeHtml(q.prompt)}</div>
+      <div class="feedback">
+        <div><span class="label">Ihre Antwort:</span> <span class="your-answer ${ok ? 'ok' : ''}">${escapeHtml(userDisplay)}</span></div>
+        ${ok ? '' : `<div><span class="label">Richtige Antwort:</span> <span class="correct-answer">${escapeHtml(correctDisplay)}</span></div>`}
+        <div class="explanation"><span class="label">Erklärung:</span> ${escapeHtml(q.explanation)}</div>
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="actions">
+    <button class="secondary" onclick="window.scrollTo({top:0,behavior:'smooth'})">Nach oben</button>
+    <button onclick="location.reload()">Test neu starten / anderen Test wählen</button>
+  </div>`;
+
+  resultsEl.innerHTML = html;
+}
+
+function formatUserAnswer(q, val, answered) {
+  if (!answered) return '— (leer)';
+  if (q.type === 'mc') return q.options[Number(val)] || '—';
+  return val;
+}
+
+function formatCorrectAnswer(q) {
+  if (q.type === 'mc') return q.options[q.answer];
+  return q.answer.join('  |  ');
+}
+
+// ---------------------------------------------------------------
+// Wire up
+// ---------------------------------------------------------------
+document.querySelectorAll('#intro [data-test]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentTestName = btn.getAttribute('data-test');
+    currentQuestions = testBanks[currentTestName];
+    intro.hidden = true;
+    renderQuiz();
+    form.hidden = false;
+    actions.hidden = false;
+  });
+});
+
+submitBtn.addEventListener('click', () => {
+  const result = gradeAll();
+  form.hidden = true;
+  actions.hidden = true;
+  renderResults(result);
+  resultsEl.hidden = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
